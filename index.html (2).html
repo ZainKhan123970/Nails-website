@@ -1,0 +1,1943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Luxe Nails & Spa — Premium Nail Salon</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --rose: #c8826a;
+    --rose-light: #f0c4b8;
+    --rose-dark: #8a4a35;
+    --gold: #c9a96e;
+    --gold-light: #f0dfc0;
+    --champagne: #f7f0e6;
+    --cream: #fdf8f4;
+    --deep: #1a0f0a;
+    --mid: #4a2c20;
+    --text: #2d1810;
+    --muted: #8a6b5e;
+    --white: #ffffff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Montserrat', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    width: 12px; height: 12px;
+    background: var(--rose);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none;
+    z-index: 99999;
+    transition: transform 0.1s ease, background 0.3s;
+    transform: translate(-50%, -50%);
+  }
+  .cursor-follower {
+    width: 36px; height: 36px;
+    border: 1.5px solid var(--rose);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none;
+    z-index: 99998;
+    transition: transform 0.25s ease, border-color 0.3s;
+    transform: translate(-50%, -50%);
+  }
+  a:hover ~ .cursor, button:hover ~ .cursor { transform: translate(-50%, -50%) scale(2); }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: var(--champagne); }
+  ::-webkit-scrollbar-thumb { background: var(--rose); border-radius: 10px; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; width: 100%; z-index: 1000;
+    padding: 1.2rem 5%;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(253,248,244,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(200,130,106,0.2);
+    transition: all 0.4s;
+  }
+  nav.scrolled {
+    padding: 0.8rem 5%;
+    background: rgba(253,248,244,0.97);
+    box-shadow: 0 4px 30px rgba(200,130,106,0.1);
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    color: var(--rose-dark);
+    text-decoration: none;
+    letter-spacing: 0.05em;
+  }
+  .nav-logo span { color: var(--gold); font-style: italic; }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    text-decoration: none;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--mid);
+    position: relative;
+    padding-bottom: 4px;
+    transition: color 0.3s;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute; bottom: 0; left: 0;
+    width: 0; height: 1.5px;
+    background: var(--rose);
+    transition: width 0.35s ease;
+  }
+  .nav-links a:hover { color: var(--rose); }
+  .nav-links a:hover::after { width: 100%; }
+  .nav-cta {
+    background: var(--rose);
+    color: white !important;
+    padding: 0.55rem 1.4rem;
+    border-radius: 2rem;
+    transition: background 0.3s, transform 0.2s, box-shadow 0.3s !important;
+  }
+  .nav-cta::after { display: none !important; }
+  .nav-cta:hover {
+    background: var(--rose-dark) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(200,130,106,0.4);
+  }
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+  .hamburger span { width: 24px; height: 2px; background: var(--rose); transition: 0.3s; display: block; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    padding: 7rem 5% 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 80% 80% at 70% 50%, rgba(240,196,184,0.4) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 40% at 15% 80%, rgba(201,169,110,0.2) 0%, transparent 50%),
+      var(--cream);
+    z-index: 0;
+  }
+  /* Floating 3D orbs */
+  .orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(2px);
+    animation: float 8s ease-in-out infinite;
+    z-index: 0;
+  }
+  .orb1 { width: 320px; height: 320px; background: radial-gradient(circle at 35% 35%, #f4d4c8, #c8826a88); right: 8%; top: 12%; animation-delay: 0s; }
+  .orb2 { width: 180px; height: 180px; background: radial-gradient(circle at 35% 35%, #f0dfc0, #c9a96e66); right: 30%; bottom: 20%; animation-delay: -3s; }
+  .orb3 { width: 100px; height: 100px; background: radial-gradient(circle at 35% 35%, #fce8e0, #c8826a44); right: 18%; top: 55%; animation-delay: -5s; }
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    33% { transform: translateY(-22px) rotate(3deg); }
+    66% { transform: translateY(10px) rotate(-2deg); }
+  }
+  .hero-content { position: relative; z-index: 2; max-width: 620px; }
+  .hero-eyebrow {
+    font-size: 0.72rem; letter-spacing: 0.25em;
+    text-transform: uppercase; color: var(--gold);
+    font-weight: 600; margin-bottom: 1.2rem;
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .hero-eyebrow::after { content: ''; flex: 0 0 40px; height: 1px; background: var(--gold); }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.8rem, 6vw, 5rem);
+    line-height: 1.1;
+    color: var(--deep);
+    margin-bottom: 1.5rem;
+  }
+  .hero h1 em { color: var(--rose); font-style: italic; }
+  .hero p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: var(--muted);
+    margin-bottom: 2.5rem;
+    font-weight: 300;
+  }
+  .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: linear-gradient(135deg, var(--rose), var(--rose-dark));
+    color: white;
+    padding: 0.9rem 2rem;
+    border-radius: 3rem;
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 6px 24px rgba(200,130,106,0.35);
+    border: none; cursor: none;
+  }
+  .btn-primary:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 14px 36px rgba(200,130,106,0.5);
+  }
+  .btn-secondary {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    border: 1.5px solid var(--rose);
+    color: var(--rose);
+    padding: 0.9rem 2rem;
+    border-radius: 3rem;
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: all 0.3s;
+    background: transparent; cursor: none;
+  }
+  .btn-secondary:hover {
+    background: var(--rose);
+    color: white;
+    transform: translateY(-4px);
+    box-shadow: 0 10px 28px rgba(200,130,106,0.3);
+  }
+  .hero-stats {
+    position: relative; z-index: 2;
+    margin-top: 4rem;
+    display: flex; gap: 3rem;
+  }
+  .stat { text-align: left; }
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem; font-weight: 700;
+    color: var(--rose-dark);
+  }
+  .stat-label {
+    font-size: 0.72rem; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--muted);
+  }
+
+  /* SECTION SHARED */
+  section { padding: 6rem 5%; }
+  .section-tag {
+    font-size: 0.72rem; letter-spacing: 0.25em;
+    text-transform: uppercase; color: var(--gold);
+    font-weight: 600; margin-bottom: 0.8rem;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1.2; color: var(--deep);
+    margin-bottom: 1rem;
+  }
+  .section-title em { color: var(--rose); font-style: italic; }
+  .section-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem; color: var(--muted);
+    font-weight: 300; line-height: 1.8;
+    max-width: 560px;
+  }
+  .divider {
+    width: 60px; height: 2px;
+    background: linear-gradient(90deg, var(--rose), var(--gold));
+    margin: 1.2rem 0 2rem;
+    border-radius: 2px;
+  }
+
+  /* SERVICES */
+  .services { background: var(--champagne); }
+  .services-header { text-align: center; margin-bottom: 3.5rem; }
+  .services-header .divider { margin: 1.2rem auto 0; }
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+  }
+  .service-card {
+    background: white;
+    border-radius: 1.2rem;
+    padding: 2rem 1.8rem;
+    text-align: center;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid rgba(200,130,106,0.12);
+    position: relative; overflow: hidden;
+    cursor: none;
+  }
+  .service-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(200,130,106,0.05), rgba(201,169,110,0.05));
+    opacity: 0; transition: opacity 0.4s;
+  }
+  .service-card:hover {
+    transform: translateY(-12px) rotateX(2deg);
+    box-shadow: 0 24px 60px rgba(200,130,106,0.2);
+    border-color: rgba(200,130,106,0.35);
+  }
+  .service-card:hover::before { opacity: 1; }
+  .service-icon {
+    font-size: 2.8rem; margin-bottom: 1rem;
+    display: block;
+    transition: transform 0.4s;
+  }
+  .service-card:hover .service-icon { transform: scale(1.2) rotate(5deg); }
+  .service-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem; color: var(--deep);
+    margin-bottom: 0.6rem;
+  }
+  .service-card p {
+    font-size: 0.82rem; color: var(--muted);
+    line-height: 1.7; margin-bottom: 1.2rem;
+  }
+  .service-price {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem; color: var(--rose);
+    font-weight: 600;
+  }
+  .service-badge {
+    position: absolute; top: 1rem; right: 1rem;
+    background: var(--rose);
+    color: white;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.7rem;
+    border-radius: 2rem;
+  }
+
+  /* GALLERY */
+  .gallery-header { text-align: center; margin-bottom: 3rem; }
+  .gallery-header .divider { margin: 1.2rem auto 0; }
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: auto auto auto;
+    gap: 1rem;
+  }
+  .gallery-item {
+    border-radius: 1rem;
+    overflow: hidden;
+    position: relative;
+    cursor: none;
+    aspect-ratio: 1;
+  }
+  .gallery-item.tall { grid-row: span 2; aspect-ratio: unset; }
+  .gallery-item.wide { grid-column: span 2; aspect-ratio: 2/1; }
+  .gallery-img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    display: block;
+  }
+  /* Placeholder nail art images using CSS */
+  .nail-bg {
+    width: 100%; height: 100%;
+    transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    position: relative;
+  }
+  .nb1 { background: linear-gradient(135deg, #f4a0a0 0%, #e06060 40%, #c84040 100%); }
+  .nb2 { background: linear-gradient(135deg, #b0d4f0 0%, #7ab8e8 40%, #4a8ac8 100%); }
+  .nb3 { background: linear-gradient(135deg, #f0d0b0 0%, #e8a870 40%, #c87840 100%); }
+  .nb4 { background: linear-gradient(135deg, #d0b0f0 0%, #a870e8 40%, #7840c8 100%); }
+  .nb5 { background: linear-gradient(135deg, #b0f0d0 0%, #60d8a0 40%, #30a870 100%); }
+  .nb6 { background: linear-gradient(135deg, #f0b0d0 0%, #e870a8 40%, #c83080 100%); }
+  .nb7 { background: linear-gradient(135deg, #f8e8c0 0%, #f0c870 40%, #d0a030 100%); }
+  .nb8 { background: linear-gradient(135deg, #2a1a2a 0%, #5a2a5a 50%, #8a3a6a 100%); }
+  /* Nail art decorations in gallery */
+  .nail-art-overlay {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 4rem; opacity: 0.18;
+  }
+  .gallery-item .tall .nail-art-overlay { font-size: 6rem; }
+
+  .gallery-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(26,15,10,0.9) 0%, rgba(26,15,10,0.3) 50%, transparent 100%);
+    opacity: 0;
+    transition: opacity 0.4s;
+    display: flex; flex-direction: column;
+    justify-content: flex-end; padding: 1.5rem;
+  }
+  .gallery-item:hover .gallery-overlay { opacity: 1; }
+  .gallery-item:hover .nail-bg { transform: scale(1.1); }
+  .gallery-overlay h4 {
+    font-family: 'Playfair Display', serif;
+    color: white; font-size: 1rem; margin-bottom: 0.3rem;
+  }
+  .gallery-overlay p { color: rgba(255,255,255,0.7); font-size: 0.75rem; }
+  .gallery-zoom {
+    position: absolute; top: 1rem; right: 1rem;
+    width: 36px; height: 36px;
+    background: rgba(255,255,255,0.9);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; transform: scale(0.8);
+    transition: all 0.3s;
+    color: var(--rose);
+    font-size: 1.1rem;
+  }
+  .gallery-item:hover .gallery-zoom { opacity: 1; transform: scale(1); }
+
+  /* TEAM */
+  .team { background: var(--champagne); }
+  .team-header { text-align: center; margin-bottom: 3.5rem; }
+  .team-header .divider { margin: 1.2rem auto 0; }
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 2rem;
+  }
+  .team-card {
+    text-align: center;
+    transition: transform 0.4s;
+    cursor: none;
+  }
+  .team-card:hover { transform: translateY(-10px); }
+  .team-avatar {
+    width: 160px; height: 160px;
+    border-radius: 50%;
+    margin: 0 auto 1.2rem;
+    position: relative;
+    overflow: hidden;
+    border: 4px solid white;
+    box-shadow: 0 8px 30px rgba(200,130,106,0.2);
+    transition: box-shadow 0.4s;
+  }
+  .team-card:hover .team-avatar {
+    box-shadow: 0 16px 50px rgba(200,130,106,0.4);
+  }
+  .avatar-placeholder {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 4rem;
+  }
+  .av1 { background: linear-gradient(135deg, #f4c8b8, #e89080); }
+  .av2 { background: linear-gradient(135deg, #c8d4f4, #8090e8); }
+  .av3 { background: linear-gradient(135deg, #c8f4d4, #60c870); }
+  .av4 { background: linear-gradient(135deg, #f4d8c8, #e8a070); }
+  .team-ring {
+    position: absolute; inset: -3px;
+    border-radius: 50%;
+    border: 2px dashed var(--rose);
+    opacity: 0;
+    transition: opacity 0.3s, transform 0.6s;
+  }
+  .team-card:hover .team-ring { opacity: 1; transform: rotate(45deg); }
+  .team-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem; color: var(--deep);
+  }
+  .team-role {
+    font-size: 0.75rem; color: var(--rose);
+    font-weight: 600; letter-spacing: 0.1em;
+    text-transform: uppercase; margin: 0.3rem 0 0.7rem;
+  }
+  .team-card p {
+    font-size: 0.82rem; color: var(--muted);
+    line-height: 1.7;
+  }
+  .team-socials { display: flex; justify-content: center; gap: 0.8rem; margin-top: 0.8rem; }
+  .team-socials a {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    border: 1px solid var(--rose-light);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.8rem; text-decoration: none; color: var(--rose);
+    transition: all 0.3s;
+  }
+  .team-socials a:hover {
+    background: var(--rose); color: white;
+    transform: scale(1.15);
+  }
+
+  /* TESTIMONIALS */
+  .testimonials { background: var(--deep); color: white; position: relative; overflow: hidden; }
+  .testimonials::before {
+    content: '"';
+    position: absolute;
+    font-family: 'Playfair Display', serif;
+    font-size: 30rem;
+    color: rgba(200,130,106,0.06);
+    top: -10rem; left: -5rem;
+    line-height: 1;
+    pointer-events: none;
+  }
+  .testimonials-header { text-align: center; margin-bottom: 3.5rem; }
+  .testimonials-header .section-title { color: white; }
+  .testimonials-header .divider { margin: 1.2rem auto 0; }
+  .reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+  .review-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(200,130,106,0.2);
+    border-radius: 1.2rem;
+    padding: 2rem;
+    transition: all 0.4s;
+    position: relative;
+    cursor: none;
+  }
+  .review-card:hover {
+    background: rgba(200,130,106,0.1);
+    border-color: rgba(200,130,106,0.5);
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+  }
+  .review-stars { color: var(--gold); font-size: 1rem; margin-bottom: 1rem; letter-spacing: 0.1em; }
+  .review-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem; color: rgba(255,255,255,0.85);
+    line-height: 1.8; font-style: italic;
+    margin-bottom: 1.5rem;
+  }
+  .reviewer { display: flex; align-items: center; gap: 0.8rem; }
+  .reviewer-avatar {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem;
+    flex-shrink: 0;
+  }
+  .ra1 { background: linear-gradient(135deg, #f4c8b8, #e89080); }
+  .ra2 { background: linear-gradient(135deg, #c8d4f4, #8090e8); }
+  .ra3 { background: linear-gradient(135deg, #f4e4c8, #e8c070); }
+  .ra4 { background: linear-gradient(135deg, #c8f4e4, #60d8a0); }
+  .ra5 { background: linear-gradient(135deg, #e4c8f4, #b070e8); }
+  .ra6 { background: linear-gradient(135deg, #f4c8e0, #e870a8); }
+  .reviewer-info h5 { color: white; font-size: 0.9rem; font-weight: 600; }
+  .reviewer-info span { font-size: 0.75rem; color: rgba(255,255,255,0.45); }
+  .google-badge {
+    position: absolute; top: 1.2rem; right: 1.2rem;
+    font-size: 0.65rem; color: rgba(255,255,255,0.3);
+    font-weight: 600; letter-spacing: 0.1em;
+  }
+
+  /* BOOKING */
+  .booking { background: white; }
+  .booking-inner {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 5rem;
+    align-items: start;
+  }
+  .booking-info h2.section-title { margin-bottom: 0.5rem; }
+  .booking-features { margin: 2rem 0; display: flex; flex-direction: column; gap: 1rem; }
+  .booking-feat {
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .feat-icon {
+    width: 44px; height: 44px; flex-shrink: 0;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--rose-light), var(--gold-light));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem;
+    transition: transform 0.3s;
+  }
+  .booking-feat:hover .feat-icon { transform: scale(1.15) rotate(10deg); }
+  .feat-text strong { font-size: 0.88rem; color: var(--deep); display: block; }
+  .feat-text span { font-size: 0.78rem; color: var(--muted); }
+  .booking-form {
+    background: var(--champagne);
+    border-radius: 1.5rem;
+    padding: 2.5rem;
+    box-shadow: 0 20px 60px rgba(200,130,106,0.12);
+    border: 1px solid rgba(200,130,106,0.15);
+  }
+  .booking-form h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem; color: var(--deep);
+    margin-bottom: 0.4rem;
+  }
+  .booking-form p { font-size: 0.82rem; color: var(--muted); margin-bottom: 1.8rem; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .form-group { margin-bottom: 1.1rem; }
+  .form-group label {
+    font-size: 0.75rem; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--mid); display: block; margin-bottom: 0.5rem;
+  }
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1.5px solid rgba(200,130,106,0.2);
+    border-radius: 0.75rem;
+    background: white;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.85rem;
+    color: var(--text);
+    transition: border-color 0.3s, box-shadow 0.3s, transform 0.2s;
+    outline: none;
+    cursor: none;
+  }
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    border-color: var(--rose);
+    box-shadow: 0 0 0 4px rgba(200,130,106,0.12);
+    transform: translateY(-1px);
+  }
+  .form-group input:hover,
+  .form-group select:hover,
+  .form-group textarea:hover {
+    border-color: rgba(200,130,106,0.5);
+  }
+  .form-group textarea { resize: vertical; min-height: 90px; }
+  .btn-book {
+    width: 100%;
+    padding: 1rem;
+    background: linear-gradient(135deg, var(--rose), var(--rose-dark));
+    color: white;
+    border: none;
+    border-radius: 3rem;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: none;
+    transition: all 0.3s;
+    box-shadow: 0 8px 24px rgba(200,130,106,0.35);
+    margin-top: 0.5rem;
+  }
+  .btn-book:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 36px rgba(200,130,106,0.5);
+    background: linear-gradient(135deg, var(--rose-dark), #6a2a18);
+  }
+  .btn-book:active { transform: translateY(0); }
+  .form-success {
+    display: none;
+    text-align: center;
+    padding: 2rem;
+  }
+  .form-success .check { font-size: 3rem; margin-bottom: 1rem; }
+  .form-success h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem; color: var(--rose-dark);
+    margin-bottom: 0.5rem;
+  }
+  .form-success p { color: var(--muted); font-size: 0.9rem; }
+
+  /* PRICING */
+  .pricing { background: var(--champagne); }
+  .pricing-header { text-align: center; margin-bottom: 3.5rem; }
+  .pricing-header .divider { margin: 1.2rem auto 0; }
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+  }
+  .price-card {
+    background: white;
+    border-radius: 1.5rem;
+    padding: 2.5rem 2rem;
+    border: 1.5px solid rgba(200,130,106,0.15);
+    transition: all 0.4s;
+    position: relative; overflow: hidden;
+    cursor: none;
+  }
+  .price-card.featured {
+    background: linear-gradient(145deg, var(--rose-dark), #6a2a18);
+    border-color: transparent;
+    color: white;
+  }
+  .price-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 24px 60px rgba(200,130,106,0.2);
+  }
+  .price-card.featured:hover {
+    box-shadow: 0 24px 60px rgba(200,130,106,0.5);
+  }
+  .price-plan {
+    font-size: 0.75rem; letter-spacing: 0.2em;
+    text-transform: uppercase; font-weight: 600;
+    color: var(--gold); margin-bottom: 0.8rem;
+  }
+  .price-card.featured .price-plan { color: var(--gold-light); }
+  .price-amount {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem; font-weight: 700;
+    color: var(--deep); line-height: 1;
+  }
+  .price-card.featured .price-amount { color: white; }
+  .price-amount sup { font-size: 1.2rem; vertical-align: top; margin-top: 0.5rem; }
+  .price-period { font-size: 0.8rem; color: var(--muted); margin-bottom: 1.5rem; }
+  .price-card.featured .price-period { color: rgba(255,255,255,0.6); }
+  .price-features { list-style: none; margin: 1.5rem 0; display: flex; flex-direction: column; gap: 0.8rem; }
+  .price-features li {
+    font-size: 0.85rem; color: var(--mid);
+    display: flex; align-items: center; gap: 0.6rem;
+  }
+  .price-card.featured .price-features li { color: rgba(255,255,255,0.85); }
+  .price-features li::before { content: '✓'; color: var(--rose); font-weight: 700; }
+  .price-card.featured .price-features li::before { color: var(--gold); }
+  .popular-badge {
+    position: absolute; top: 1.2rem; right: 1.2rem;
+    background: var(--gold);
+    color: var(--deep);
+    font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 0.25rem 0.8rem; border-radius: 2rem;
+  }
+  .price-btn {
+    width: 100%;
+    padding: 0.85rem;
+    border-radius: 3rem;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.8rem; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    cursor: none;
+    transition: all 0.3s;
+    border: 1.5px solid var(--rose);
+    background: transparent;
+    color: var(--rose);
+    margin-top: auto;
+  }
+  .price-btn:hover {
+    background: var(--rose); color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(200,130,106,0.3);
+  }
+  .price-card.featured .price-btn {
+    background: white; color: var(--rose-dark); border-color: white;
+  }
+  .price-card.featured .price-btn:hover {
+    background: var(--gold); color: var(--deep); border-color: var(--gold);
+  }
+
+  /* CONTACT */
+  .contact { background: white; }
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 5rem;
+    align-items: start;
+  }
+  .contact-details { display: flex; flex-direction: column; gap: 1.5rem; margin-top: 2rem; }
+  .contact-item {
+    display: flex; align-items: flex-start; gap: 1rem;
+    padding: 1.2rem;
+    border-radius: 1rem;
+    transition: all 0.3s;
+    cursor: none;
+  }
+  .contact-item:hover {
+    background: var(--champagne);
+    transform: translateX(6px);
+  }
+  .contact-icon {
+    width: 44px; height: 44px; flex-shrink: 0;
+    background: linear-gradient(135deg, var(--rose-light), var(--gold-light));
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem;
+    transition: transform 0.3s;
+  }
+  .contact-item:hover .contact-icon { transform: rotate(15deg) scale(1.1); }
+  .contact-item h5 {
+    font-size: 0.8rem; letter-spacing: 0.1em;
+    text-transform: uppercase; font-weight: 600;
+    color: var(--muted); margin-bottom: 0.3rem;
+  }
+  .contact-item p { font-size: 0.9rem; color: var(--deep); line-height: 1.6; }
+  .map-container {
+    border-radius: 1.5rem;
+    overflow: hidden;
+    height: 400px;
+    background: var(--champagne);
+    border: 1px solid rgba(200,130,106,0.2);
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+    transition: box-shadow 0.3s;
+  }
+  .map-container:hover {
+    box-shadow: 0 16px 50px rgba(200,130,106,0.15);
+  }
+  .map-pin-art {
+    text-align: center;
+  }
+  .map-pin-art .pin { font-size: 4rem; margin-bottom: 1rem; animation: bounce 2s ease-in-out infinite; }
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+  }
+  .map-pin-art h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem; color: var(--rose-dark);
+  }
+  .map-pin-art p { color: var(--muted); font-size: 0.85rem; margin-top: 0.4rem; }
+  .map-btn {
+    margin-top: 1rem;
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    background: var(--rose); color: white;
+    padding: 0.6rem 1.4rem;
+    border-radius: 2rem;
+    font-size: 0.8rem; font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s;
+  }
+  .map-btn:hover {
+    background: var(--rose-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(200,130,106,0.4);
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--deep);
+    color: rgba(255,255,255,0.7);
+    padding: 4rem 5% 2rem;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 3rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .footer-brand .nav-logo { color: white; font-size: 1.8rem; }
+  .footer-brand .nav-logo span { color: var(--gold); }
+  .footer-brand p {
+    font-size: 0.85rem; line-height: 1.8;
+    margin: 1rem 0 1.5rem;
+  }
+  .footer-socials { display: flex; gap: 0.7rem; }
+  .social-btn {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.15);
+    display: flex; align-items: center; justify-content: center;
+    text-decoration: none;
+    color: rgba(255,255,255,0.7);
+    font-size: 0.9rem;
+    transition: all 0.3s;
+  }
+  .social-btn:hover {
+    background: var(--rose);
+    border-color: var(--rose);
+    color: white;
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(200,130,106,0.4);
+  }
+  .footer-col h4 {
+    font-size: 0.78rem; letter-spacing: 0.15em;
+    text-transform: uppercase; font-weight: 600;
+    color: white; margin-bottom: 1.2rem;
+  }
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+  .footer-col a {
+    font-size: 0.85rem; color: rgba(255,255,255,0.55);
+    text-decoration: none;
+    transition: all 0.3s;
+    display: inline-flex; align-items: center; gap: 0.4rem;
+  }
+  .footer-col a:hover { color: var(--rose); transform: translateX(4px); }
+  .footer-bottom {
+    padding-top: 2rem;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 1rem;
+  }
+  .footer-bottom p { font-size: 0.78rem; }
+  .footer-bottom p span { color: var(--rose); }
+
+  /* WHATSAPP CHATBOT */
+  .wa-container {
+    position: fixed;
+    bottom: 2rem; right: 2rem;
+    z-index: 10000;
+  }
+  .wa-btn {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #25D366, #128C7E);
+    display: flex; align-items: center; justify-content: center;
+    cursor: none;
+    box-shadow: 0 8px 30px rgba(37,211,102,0.45);
+    transition: all 0.3s;
+    position: relative;
+    z-index: 2;
+    border: none;
+  }
+  .wa-btn:hover {
+    transform: scale(1.12) rotate(-5deg);
+    box-shadow: 0 12px 40px rgba(37,211,102,0.6);
+  }
+  .wa-btn svg { width: 32px; height: 32px; fill: white; }
+  .wa-pulse {
+    position: absolute;
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    background: rgba(37,211,102,0.35);
+    animation: pulse 2s ease-out infinite;
+    top: 0; left: 0;
+  }
+  @keyframes pulse {
+    0% { transform: scale(1); opacity: 0.8; }
+    100% { transform: scale(2); opacity: 0; }
+  }
+  .wa-tooltip {
+    position: absolute;
+    right: 76px; bottom: 10px;
+    background: white;
+    color: var(--deep);
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    white-space: nowrap;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    opacity: 0;
+    transform: translateX(10px);
+    transition: all 0.3s;
+    pointer-events: none;
+  }
+  .wa-container:hover .wa-tooltip { opacity: 1; transform: translateX(0); }
+  .wa-chat-popup {
+    position: absolute;
+    bottom: 80px; right: 0;
+    width: 320px;
+    background: white;
+    border-radius: 1.2rem;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    overflow: hidden;
+    display: none;
+    transform-origin: bottom right;
+    animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  .wa-chat-popup.open { display: block; }
+  @keyframes popIn {
+    from { transform: scale(0.8) translateY(20px); opacity: 0; }
+    to { transform: scale(1) translateY(0); opacity: 1; }
+  }
+  .wa-chat-header {
+    background: linear-gradient(135deg, #25D366, #128C7E);
+    padding: 1.2rem 1.2rem 1rem;
+    display: flex; align-items: center; gap: 0.8rem;
+  }
+  .wa-header-avatar {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem; flex-shrink: 0;
+  }
+  .wa-header-info h4 { color: white; font-size: 0.95rem; font-weight: 600; }
+  .wa-header-info span { color: rgba(255,255,255,0.8); font-size: 0.75rem; }
+  .wa-online { display: flex; align-items: center; gap: 0.3rem; }
+  .wa-dot { width: 8px; height: 8px; border-radius: 50%; background: #9EF89E; display: inline-block; margin-right: 0.3rem; animation: blink 2s infinite; }
+  @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+  .wa-close-btn {
+    margin-left: auto;
+    background: none; border: none;
+    color: rgba(255,255,255,0.8);
+    font-size: 1.3rem; cursor: none;
+    padding: 0.2rem;
+    transition: color 0.2s;
+  }
+  .wa-close-btn:hover { color: white; }
+  .wa-chat-body { padding: 1.2rem; max-height: 260px; overflow-y: auto; display: flex; flex-direction: column; gap: 0.7rem; }
+  .wa-msg {
+    max-width: 85%;
+    padding: 0.7rem 1rem;
+    border-radius: 1rem;
+    font-size: 0.83rem;
+    line-height: 1.5;
+    position: relative;
+  }
+  .wa-msg.bot {
+    background: #f0f0f0;
+    color: #1a1a1a;
+    border-bottom-left-radius: 0.2rem;
+    align-self: flex-start;
+  }
+  .wa-msg.user {
+    background: #DCF8C6;
+    color: #1a1a1a;
+    border-bottom-right-radius: 0.2rem;
+    align-self: flex-end;
+  }
+  .wa-msg-time { font-size: 0.65rem; color: #888; margin-top: 0.2rem; text-align: right; }
+  .wa-quick-replies { padding: 0 1.2rem 1rem; display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .wa-reply-btn {
+    padding: 0.35rem 0.85rem;
+    border-radius: 2rem;
+    border: 1.5px solid #25D366;
+    background: transparent;
+    color: #128C7E;
+    font-size: 0.75rem; font-weight: 600;
+    cursor: none;
+    transition: all 0.25s;
+    font-family: 'Montserrat', sans-serif;
+  }
+  .wa-reply-btn:hover {
+    background: #25D366; color: white;
+    transform: scale(1.05);
+  }
+  .wa-chat-input-row {
+    display: flex; gap: 0.5rem;
+    padding: 0.8rem 1.2rem;
+    border-top: 1px solid #f0f0f0;
+  }
+  .wa-input {
+    flex: 1;
+    border: 1px solid #ddd;
+    border-radius: 2rem;
+    padding: 0.5rem 0.9rem;
+    font-size: 0.82rem;
+    font-family: 'Montserrat', sans-serif;
+    outline: none;
+    transition: border-color 0.3s;
+    cursor: none;
+  }
+  .wa-input:focus { border-color: #25D366; }
+  .wa-send-btn {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: #25D366;
+    border: none; cursor: none;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.3s;
+    flex-shrink: 0;
+  }
+  .wa-send-btn:hover { background: #128C7E; transform: scale(1.1); }
+  .wa-send-btn svg { width: 18px; height: 18px; fill: white; }
+
+  /* ANNOUNCEMENT BANNER */
+  .banner {
+    background: linear-gradient(135deg, var(--rose-dark), var(--rose));
+    color: white;
+    text-align: center;
+    padding: 0.7rem;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    position: relative;
+    z-index: 1001;
+  }
+  .banner strong { font-weight: 700; }
+  .banner a { color: white; text-decoration: underline; margin-left: 0.5rem; }
+
+  /* Mobile hamburger */
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(253,248,244,0.97);
+    z-index: 999;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    text-decoration: none;
+    color: var(--deep);
+    transition: color 0.3s;
+  }
+  .mobile-menu a:hover { color: var(--rose); }
+  .close-menu {
+    position: absolute; top: 1.5rem; right: 1.5rem;
+    background: none; border: none;
+    font-size: 2rem; cursor: none;
+    color: var(--mid);
+  }
+
+  /* Responsive */
+  @media (max-width: 1024px) {
+    .gallery-grid { grid-template-columns: repeat(3, 1fr); }
+    .gallery-item.wide { grid-column: span 2; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .booking-inner, .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+  }
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+    .gallery-item.tall { grid-row: span 1; aspect-ratio: 1; }
+    .gallery-item.wide { grid-column: span 2; aspect-ratio: 1.5/1; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .hero-stats { gap: 1.5rem; }
+    .form-row { grid-template-columns: 1fr; }
+    .wa-chat-popup { width: 290px; }
+  }
+
+  /* Loading screen */
+  #loader {
+    position: fixed; inset: 0;
+    background: var(--cream);
+    z-index: 99999;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    transition: opacity 0.6s, visibility 0.6s;
+  }
+  #loader.hide { opacity: 0; visibility: hidden; }
+  .loader-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem; color: var(--rose-dark);
+    letter-spacing: 0.05em;
+    opacity: 0;
+    animation: fadeIn 0.8s 0.3s forwards;
+  }
+  .loader-logo span { color: var(--gold); font-style: italic; }
+  .loader-bar {
+    width: 200px; height: 2px;
+    background: rgba(200,130,106,0.2);
+    border-radius: 2px; margin-top: 2rem;
+    overflow: hidden;
+  }
+  .loader-bar-inner {
+    height: 100%;
+    background: linear-gradient(90deg, var(--rose), var(--gold));
+    border-radius: 2px;
+    animation: loadBar 2s ease forwards;
+  }
+  @keyframes loadBar { from { width: 0; } to { width: 100%; } }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* Reveal animations */
+  .reveal { opacity: 0; transform: translateY(30px); transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1); }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-left { opacity: 0; transform: translateX(-30px); transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1); }
+  .reveal-left.visible { opacity: 1; transform: translateX(0); }
+  .reveal-right { opacity: 0; transform: translateX(30px); transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1); }
+  .reveal-right.visible { opacity: 1; transform: translateX(0); }
+  .delay-1 { transition-delay: 0.1s !important; }
+  .delay-2 { transition-delay: 0.2s !important; }
+  .delay-3 { transition-delay: 0.3s !important; }
+  .delay-4 { transition-delay: 0.4s !important; }
+  .delay-5 { transition-delay: 0.5s !important; }
+</style>
+</head>
+<body>
+
+<!-- Custom cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-follower" id="cursor-follower"></div>
+
+<!-- Loader -->
+<div id="loader">
+  <div class="loader-logo">Luxe <span>Nails</span></div>
+  <div class="loader-bar"><div class="loader-bar-inner"></div></div>
+</div>
+
+<!-- Announcement Banner -->
+<div class="banner">
+  ✨ <strong>20% OFF</strong> all Gel Manicures this week! Book now and treat yourself.
+  <a href="#booking">Book Now →</a>
+</div>
+
+<!-- Navigation -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">Luxe <span>Nails</span></a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#team">Our Team</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#reviews">Reviews</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#booking" class="nav-cta">Book Now</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobile-menu">
+  <button class="close-menu" id="close-menu">✕</button>
+  <a href="#services" onclick="closeMobileMenu()">Services</a>
+  <a href="#gallery" onclick="closeMobileMenu()">Gallery</a>
+  <a href="#team" onclick="closeMobileMenu()">Our Team</a>
+  <a href="#pricing" onclick="closeMobileMenu()">Pricing</a>
+  <a href="#reviews" onclick="closeMobileMenu()">Reviews</a>
+  <a href="#contact" onclick="closeMobileMenu()">Contact</a>
+  <a href="#booking" onclick="closeMobileMenu()" style="color: var(--rose);">Book Now ✦</a>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+
+  <div>
+    <div class="hero-content">
+      <div class="hero-eyebrow reveal">Premium Nail & Spa Experience</div>
+      <h1 class="reveal delay-1">
+        Where <em>Elegance</em><br>Meets Art
+      </h1>
+      <p class="reveal delay-2">
+        Indulge in luxury nail care crafted with precision and passion. Every detail, every design — a masterpiece made just for you.
+      </p>
+      <div class="hero-btns reveal delay-3">
+        <a href="#booking" class="btn-primary">✦ Book Appointment</a>
+        <a href="#gallery" class="btn-secondary">View Gallery →</a>
+      </div>
+    </div>
+    <div class="hero-stats reveal delay-4">
+      <div class="stat">
+        <div class="stat-num">8+</div>
+        <div class="stat-label">Years of Excellence</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">12K+</div>
+        <div class="stat-label">Happy Clients</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">50+</div>
+        <div class="stat-label">Nail Designs</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="services-header reveal">
+    <div class="section-tag">What We Offer</div>
+    <h2 class="section-title">Our <em>Premium</em> Services</h2>
+    <div class="divider"></div>
+    <p class="section-sub" style="margin: 0 auto;">From classic manicures to avant-garde nail art, we offer every treatment your nails deserve.</p>
+  </div>
+  <div class="services-grid">
+    <div class="service-card reveal delay-1">
+      <span class="service-icon">💅</span>
+      <h3>Classic Manicure</h3>
+      <p>Traditional nail care including shaping, cuticle treatment, and polish of your choice.</p>
+      <div class="service-price">From $25</div>
+    </div>
+    <div class="service-card reveal delay-2">
+      <div class="service-badge">Popular</div>
+      <span class="service-icon">✨</span>
+      <h3>Gel Manicure</h3>
+      <p>Long-lasting gel polish that stays chip-free for 2–3 weeks. Glossy & durable finish.</p>
+      <div class="service-price">From $45</div>
+    </div>
+    <div class="service-card reveal delay-3">
+      <span class="service-icon">🌸</span>
+      <h3>Nail Extensions</h3>
+      <p>Acrylic, gel, or SNS extensions to achieve your dream nail length and shape.</p>
+      <div class="service-price">From $65</div>
+    </div>
+    <div class="service-card reveal delay-4">
+      <span class="service-icon">🎨</span>
+      <h3>Nail Art</h3>
+      <p>Custom hand-painted designs, ombré, chrome, floral patterns, and more. Pure artistry.</p>
+      <div class="service-price">From $15</div>
+    </div>
+    <div class="service-card reveal delay-1">
+      <span class="service-icon">🦶</span>
+      <h3>Luxury Pedicure</h3>
+      <p>Foot soak, scrub, massage, callus removal, and polish for silky-smooth feet.</p>
+      <div class="service-price">From $50</div>
+    </div>
+    <div class="service-card reveal delay-2">
+      <div class="service-badge">New</div>
+      <span class="service-icon">💎</span>
+      <h3>3D Nail Art</h3>
+      <p>Embellishments, rhinestones, sculpted 3D elements for a truly statement-making look.</p>
+      <div class="service-price">From $30</div>
+    </div>
+    <div class="service-card reveal delay-3">
+      <span class="service-icon">🌿</span>
+      <h3>Paraffin Treatment</h3>
+      <p>Deep moisturizing treatment for hands and feet. Perfect for dry or sensitive skin.</p>
+      <div class="service-price">From $20</div>
+    </div>
+    <div class="service-card reveal delay-4">
+      <span class="service-icon">💆</span>
+      <h3>Spa Package</h3>
+      <p>Complete mani-pedi spa experience with aromatherapy and full relaxation treatment.</p>
+      <div class="service-price">From $110</div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery">
+  <div class="gallery-header reveal">
+    <div class="section-tag">Our Portfolio</div>
+    <h2 class="section-title">Gallery of <em>Artistry</em></h2>
+    <div class="divider"></div>
+  </div>
+  <div class="gallery-grid reveal">
+    <div class="gallery-item tall">
+      <div class="nail-bg nb8" style="height: 100%;">
+        <div class="nail-art-overlay">💅</div>
+      </div>
+      <div class="gallery-overlay"><h4>Midnight Chrome</h4><p>3D Nail Art</p></div>
+      <div class="gallery-zoom">⊕</div>
+    </div>
+    <div class="gallery-item">
+      <div class="nail-bg nb1" style="height: 100%;">
+        <div class="nail-art-overlay">🌸</div>
+      </div>
+      <div class="gallery-overlay"><h4>Rose Bloom</h4><p>Gel Manicure</p></div>
+      <div class="gallery-zoom">⊕</div>
+    </div>
+    <div class="gallery-item">
+      <div class="nail-bg nb2" style="height: 100%;">
+        <div class="nail-art-overlay">❄️</div>
+      </div>
+      <div class="gallery-overlay"><h4>Ice Blue</h4><p>Ombré Design</p></div>
+      <div class="gallery-zoom">⊕</div>
+    </div>
+    <div class="gallery-item wide">
+      <div class="nail-bg nb7" style="height: 100%;">
+        <div class="nail-art-overlay">✨</div>
+      </div>
+      <div class="gallery-overlay"><h4>Golden Hour</h4><p>Chrome & Glitter</p></div>
+      <div class="gallery-zoom">⊕</div>
+    </div>
+    <div class="gallery-item">
+      <div class="nail-bg nb4" style="height: 100%;">
+        <div class="nail-art-overlay">🦋</div>
+      </div>
+      <div class="gallery-overlay"><h4>Lavender Dream</h4><p>Gel Extensions</p></div>
+      <div class="gallery-zoom">⊕</div>
+    </div>
+    <div class="gallery-item">
+      <div class="nail-bg nb5" style="height: 100%;">
+        <div class="nail-art-overlay">🌿</div>
+      </div>
+      <div class="gallery-overlay"><h4>Mint Leaf</h4><p>Classic Polish</p></div>
+      <div class="gallery-zoom">⊕</div>
+    </div>
+    <div class="gallery-item">
+      <div class="nail-bg nb3" style="height: 100%;">
+        <div class="nail-art-overlay">🍑</div>
+      </div>
+      <div class="gallery-overlay"><h4>Peach Glow</h4><p>French Manicure</p></div>
+      <div class="gallery-zoom">⊕</div>
+    </div>
+    <div class="gallery-item">
+      <div class="nail-bg nb6" style="height: 100%;">
+        <div class="nail-art-overlay">🌺</div>
+      </div>
+      <div class="gallery-overlay"><h4>Hot Pink</h4><p>Acrylic Extensions</p></div>
+      <div class="gallery-zoom">⊕</div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section class="team" id="team">
+  <div class="team-header reveal">
+    <div class="section-tag">Meet The Artists</div>
+    <h2 class="section-title">Our <em>Expert</em> Team</h2>
+    <div class="divider"></div>
+    <p class="section-sub" style="margin: 0 auto;">Each of our nail artists brings years of expertise and passion to every appointment.</p>
+  </div>
+  <div class="team-grid">
+    <div class="team-card reveal delay-1">
+      <div class="team-avatar">
+        <div class="avatar-placeholder av1">👩</div>
+        <div class="team-ring"></div>
+      </div>
+      <h3>Sofia Martínez</h3>
+      <div class="team-role">Founder & Master Nail Artist</div>
+      <p>12 years of experience. Specializes in 3D nail art and luxury gel designs.</p>
+      <div class="team-socials">
+        <a href="#">ig</a><a href="#">fb</a><a href="#">wa</a>
+      </div>
+    </div>
+    <div class="team-card reveal delay-2">
+      <div class="team-avatar">
+        <div class="avatar-placeholder av2">👩‍🦱</div>
+        <div class="team-ring"></div>
+      </div>
+      <h3>Aisha Khan</h3>
+      <div class="team-role">Nail Artist & Acrylic Specialist</div>
+      <p>Expert in nail extensions and intricate hand-painted nail art with 8 years of experience.</p>
+      <div class="team-socials">
+        <a href="#">ig</a><a href="#">fb</a><a href="#">wa</a>
+      </div>
+    </div>
+    <div class="team-card reveal delay-3">
+      <div class="team-avatar">
+        <div class="avatar-placeholder av3">👩‍🦳</div>
+        <div class="team-ring"></div>
+      </div>
+      <h3>Mei-Lin Chen</h3>
+      <div class="team-role">Senior Nail Artist</div>
+      <p>Renowned for her minimalist aesthetic and impeccable precision in gel and chrome work.</p>
+      <div class="team-socials">
+        <a href="#">ig</a><a href="#">fb</a><a href="#">wa</a>
+      </div>
+    </div>
+    <div class="team-card reveal delay-4">
+      <div class="team-avatar">
+        <div class="avatar-placeholder av4">👩‍🦰</div>
+        <div class="team-ring"></div>
+      </div>
+      <h3>Isabella Rossi</h3>
+      <div class="team-role">Pedicure & Spa Specialist</div>
+      <p>Certified spa therapist who delivers the most relaxing luxury pedicure experiences.</p>
+      <div class="team-socials">
+        <a href="#">ig</a><a href="#">fb</a><a href="#">wa</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials" id="reviews">
+  <div class="testimonials-header reveal">
+    <div class="section-tag" style="color: var(--gold-light);">Client Love</div>
+    <h2 class="section-title">What They <em>Say</em></h2>
+    <div class="divider" style="margin: 1.2rem auto 0;"></div>
+  </div>
+  <div class="reviews-grid">
+    <div class="review-card reveal delay-1">
+      <div class="review-stars">★★★★★</div>
+      <div class="google-badge">GOOGLE</div>
+      <p class="review-text">"Absolutely obsessed with my nails! Sofia did an incredible 3D flower design. The salon is stunning and the service is unmatched. I'll never go anywhere else."</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar ra1">👩</div>
+        <div class="reviewer-info"><h5>Zara Ahmed</h5><span>2 weeks ago</span></div>
+      </div>
+    </div>
+    <div class="review-card reveal delay-2">
+      <div class="review-stars">★★★★★</div>
+      <div class="google-badge">GOOGLE</div>
+      <p class="review-text">"Best gel manicure in town! Lasted 4 weeks without a single chip. The team is professional, warm, and the atmosphere is so luxurious. Highly recommend!"</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar ra2">👩‍🦱</div>
+        <div class="reviewer-info"><h5>Priya Sharma</h5><span>1 month ago</span></div>
+      </div>
+    </div>
+    <div class="review-card reveal delay-3">
+      <div class="review-stars">★★★★★</div>
+      <div class="google-badge">GOOGLE</div>
+      <p class="review-text">"I booked the full spa package and it was the most relaxing experience. Mei-Lin is an absolute artist. My feet have never looked better. Worth every penny!"</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar ra3">👳‍♀️</div>
+        <div class="reviewer-info"><h5>Fatima Al-Hassan</h5><span>3 weeks ago</span></div>
+      </div>
+    </div>
+    <div class="review-card reveal delay-1">
+      <div class="review-stars">★★★★★</div>
+      <div class="google-badge">GOOGLE</div>
+      <p class="review-text">"Came for a birthday treat and left feeling like royalty. The nail art Aisha created for me was beyond my imagination. The booking process was super easy too!"</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar ra4">👩‍🦰</div>
+        <div class="reviewer-info"><h5>Emma Wilson</h5><span>1 week ago</span></div>
+      </div>
+    </div>
+    <div class="review-card reveal delay-2">
+      <div class="review-stars">★★★★★</div>
+      <div class="google-badge">GOOGLE</div>
+      <p class="review-text">"The hygiene standards here are exceptional. Everything is sterilized properly. My nails look amazing and I felt completely safe throughout. 10/10 experience."</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar ra5">👩‍🦳</div>
+        <div class="reviewer-info"><h5>Sarah Nguyen</h5><span>2 months ago</span></div>
+      </div>
+    </div>
+    <div class="review-card reveal delay-3">
+      <div class="review-stars">★★★★★</div>
+      <div class="google-badge">GOOGLE</div>
+      <p class="review-text">"I've been to many nail salons but Luxe Nails is on another level. The paraffin treatment for my hands was divine. Already booked my next appointment!"</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar ra6">👱‍♀️</div>
+        <div class="reviewer-info"><h5>Layla Morrison</h5><span>5 days ago</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="pricing">
+  <div class="pricing-header reveal">
+    <div class="section-tag">Transparent Pricing</div>
+    <h2 class="section-title">Choose Your <em>Package</em></h2>
+    <div class="divider"></div>
+    <p class="section-sub" style="margin: 0 auto;">No hidden fees — just pure, transparent luxury.</p>
+  </div>
+  <div class="pricing-grid">
+    <div class="price-card reveal delay-1">
+      <div class="price-plan">Essential</div>
+      <div class="price-amount"><sup>$</sup>49</div>
+      <div class="price-period">per visit</div>
+      <ul class="price-features">
+        <li>Classic Manicure</li>
+        <li>Nail Shaping & Filing</li>
+        <li>Cuticle Treatment</li>
+        <li>Standard Polish</li>
+        <li>Hand Massage (5 min)</li>
+      </ul>
+      <button class="price-btn" onclick="document.getElementById('booking').scrollIntoView({behavior:'smooth'})">Book Now</button>
+    </div>
+    <div class="price-card featured reveal delay-2">
+      <div class="popular-badge">Most Popular</div>
+      <div class="price-plan">Luxe</div>
+      <div class="price-amount"><sup>$</sup>99</div>
+      <div class="price-period">per visit</div>
+      <ul class="price-features">
+        <li>Gel Manicure + Pedicure</li>
+        <li>Nail Art (2 designs)</li>
+        <li>Cuticle & Paraffin Treatment</li>
+        <li>Gel Extensions Option</li>
+        <li>Full Arm Massage (15 min)</li>
+        <li>Priority Booking</li>
+      </ul>
+      <button class="price-btn" onclick="document.getElementById('booking').scrollIntoView({behavior:'smooth'})">Book Now</button>
+    </div>
+    <div class="price-card reveal delay-3">
+      <div class="price-plan">Royal Spa</div>
+      <div class="price-amount"><sup>$</sup>175</div>
+      <div class="price-period">per visit</div>
+      <ul class="price-features">
+        <li>Full Spa Mani-Pedi</li>
+        <li>Custom 3D Nail Art</li>
+        <li>Acrylic / Gel Extensions</li>
+        <li>Aromatherapy Treatment</li>
+        <li>60-min Full Relaxation</li>
+        <li>Champagne Welcome</li>
+        <li>Premium Products Only</li>
+      </ul>
+      <button class="price-btn" onclick="document.getElementById('booking').scrollIntoView({behavior:'smooth'})">Book Now</button>
+    </div>
+  </div>
+</section>
+
+<!-- BOOKING -->
+<section class="booking" id="booking">
+  <div class="booking-inner">
+    <div class="reveal-left">
+      <div class="section-tag">Reservations</div>
+      <h2 class="section-title">Book Your <em>Appointment</em></h2>
+      <div class="divider"></div>
+      <p class="section-sub">Reserve your spot in just a few clicks. Our team will confirm within 1 hour.</p>
+      <div class="booking-features">
+        <div class="booking-feat">
+          <div class="feat-icon">🕐</div>
+          <div class="feat-text">
+            <strong>Flexible Hours</strong>
+            <span>Mon–Sat: 9AM–8PM | Sun: 10AM–6PM</span>
+          </div>
+        </div>
+        <div class="booking-feat">
+          <div class="feat-icon">✅</div>
+          <div class="feat-text">
+            <strong>Instant Confirmation</strong>
+            <span>Get your booking confirmed via WhatsApp & SMS</span>
+          </div>
+        </div>
+        <div class="booking-feat">
+          <div class="feat-icon">🔄</div>
+          <div class="feat-text">
+            <strong>Free Rescheduling</strong>
+            <span>Change your booking up to 24 hours before</span>
+          </div>
+        </div>
+        <div class="booking-feat">
+          <div class="feat-icon">🎁</div>
+          <div class="feat-text">
+            <strong>First Visit Gift</strong>
+            <span>New clients get a complimentary nail art add-on</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="booking-form reveal-right">
+      <h3>Reserve Your Spot</h3>
+      <p>Fill in your details and we'll get back to you shortly.</p>
+
+      <div id="booking-form-content">
+        <div class="form-row">
+          <div class="form-group">
+            <label>First Name</label>
+            <input type="text" id="fname" placeholder="Sofia" required>
+          </div>
+          <div class="form-group">
+            <label>Last Name</label>
+            <input type="text" id="lname" placeholder="Martínez">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Phone Number</label>
+            <input type="tel" id="phone" placeholder="+92 300 000 0000">
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="email" placeholder="your@email.com">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Preferred Date</label>
+            <input type="date" id="bdate">
+          </div>
+          <div class="form-group">
+            <label>Preferred Time</label>
+            <select id="btime">
+              <option value="">Select time</option>
+              <option>9:00 AM</option><option>10:00 AM</option>
+              <option>11:00 AM</option><option>12:00 PM</option>
+              <option>1:00 PM</option><option>2:00 PM</option>
+              <option>3:00 PM</option><option>4:00 PM</option>
+              <option>5:00 PM</option><option>6:00 PM</option>
+              <option>7:00 PM</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Service</label>
+          <select id="bservice">
+            <option value="">Select a service</option>
+            <option>Classic Manicure ($25+)</option>
+            <option>Gel Manicure ($45+)</option>
+            <option>Nail Extensions ($65+)</option>
+            <option>Nail Art ($15+)</option>
+            <option>Luxury Pedicure ($50+)</option>
+            <option>3D Nail Art ($30+)</option>
+            <option>Paraffin Treatment ($20+)</option>
+            <option>Full Spa Package ($110+)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Special Requests</label>
+          <textarea id="bnotes" placeholder="Any special designs, allergies, or preferences..."></textarea>
+        </div>
+        <button class="btn-book" onclick="submitBooking()">✦ Confirm Booking</button>
+      </div>
+
+      <div class="form-success" id="booking-success">
+        <div class="check">🎉</div>
+        <h4>Booking Confirmed!</h4>
+        <p>Thank you! We've received your appointment request.<br>We'll confirm via WhatsApp within 1 hour.</p>
+        <br>
+        <button class="btn-book" style="max-width: 200px; margin: 0 auto;" onclick="resetForm()">Book Another</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="contact-grid">
+    <div class="reveal-left">
+      <div class="section-tag">Find Us</div>
+      <h2 class="section-title">Visit Our <em>Salon</em></h2>
+      <div class="divider"></div>
+      <p class="section-sub">Come experience the luxury in person. We're conveniently located in the heart of the city.</p>
+      <div class="contact-details">
+        <div class="contact-item">
+          <div class="contact-icon">📍</div>
+          <div>
+            <h5>Address</h5>
+            <p>24 Pearl Boulevard, Clifton<br>Karachi, Sindh, Pakistan</p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">📞</div>
+          <div>
+            <h5>Phone & WhatsApp</h5>
+            <p>+92 300 123 4567<br>+92 321 987 6543</p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">✉️</div>
+          <div>
+            <h5>Email</h5>
+            <p>hello@luxenailssalon.com<br>bookings@luxenailssalon.com</p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">🕐</div>
+          <div>
+            <h5>Working Hours</h5>
+            <p>Mon – Sat: 9:00 AM – 8:00 PM<br>Sunday: 10:00 AM – 6:00 PM</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="reveal-right">
+      <div class="map-container">
+        <div class="map-pin-art">
+          <div class="pin">📍</div>
+          <h4>Luxe Nails & Spa</h4>
+          <p>24 Pearl Boulevard, Clifton, Karachi</p>
+          <a href="https://maps.google.com" target="_blank" class="map-btn">Open in Google Maps →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="#" class="nav-logo">Luxe <span>Nails</span></a>
+      <p>A premium nail and spa sanctuary where artistry meets relaxation. We believe every client deserves to feel beautiful, pampered, and confident.</p>
+      <div class="footer-socials">
+        <a href="#" class="social-btn">ig</a>
+        <a href="#" class="social-btn">fb</a>
+        <a href="#" class="social-btn">tk</a>
+        <a href="#" class="social-btn">yt</a>
+        <a href="#" class="social-btn">wa</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="#services">Classic Manicure</a></li>
+        <li><a href="#services">Gel Manicure</a></li>
+        <li><a href="#services">Nail Extensions</a></li>
+        <li><a href="#services">Nail Art</a></li>
+        <li><a href="#services">Luxury Pedicure</a></li>
+        <li><a href="#services">3D Nail Art</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+        <li><a href="#team">Our Team</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#reviews">Reviews</a></li>
+        <li><a href="#booking">Book Now</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Policies</h4>
+      <ul>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Cancellation Policy</a></li>
+        <li><a href="#">Hygiene Standards</a></li>
+        <li><a href="#">Gift Cards</a></li>
+        <li><a href="#">Loyalty Program</a></li>
+        <li><a href="#">FAQs</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 <span>Luxe Nails & Spa</span>. All rights reserved. Made with ♡ in Karachi.</p>
+    <p>Designed with <span>✦</span> elegance in mind.</p>
+  </div>
+</footer>
+
+<!-- WhatsApp Chatbot -->
+<div class="wa-container">
+  <div class="wa-pulse"></div>
+  <div class="wa-tooltip">Chat with us!</div>
+
+  <div class="wa-chat-popup" id="wa-popup">
+    <div class="wa-chat-header">
+      <div class="wa-header-avatar">💅</div>
+      <div class="wa-header-info">
+        <h4>Luxe Nails Support</h4>
+        <span class="wa-online"><span class="wa-dot"></span>Online — replies instantly</span>
+      </div>
+      <button class="wa-close-btn" onclick="closeWaChat()">✕</button>
+    </div>
+    <div class="wa-chat-body" id="wa-chat-body">
+      <div class="wa-msg bot">
+        Hi there! 👋 Welcome to <strong>Luxe Nails & Spa</strong>!
+        <div class="wa-msg-time">Now</div>
+      </div>
+      <div class="wa-msg bot">
+        How can I help you today? 💅✨
+        <div class="wa-msg-time">Now</div>
+      </div>
+    </div>
+    <div class="wa-quick-replies" id="wa-quick-replies">
+      <button class="wa-reply-btn" onclick="waReply('📅 Book Appointment')">📅 Book Appointment</button>
+      <button class="wa-reply-btn" onclick="waReply('💰 View Prices')">💰 View Prices</button>
+      <button class="wa-reply-btn" onclick="waReply('🕐 Working Hours')">🕐 Hours</button>
+      <button class="wa-reply-btn" onclick="waReply('📍 Location')">📍 Location</button>
+    </div>
+    <div class="wa-chat-input-row">
+      <input class="wa-input" id="wa-input" type="text" placeholder="Type a message..." onkeypress="waKeyPress(event)">
+      <button class="wa-send-btn" onclick="waSend()">
+        <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <button class="wa-btn" id="wa-toggle" onclick="toggleWaChat()">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+    </svg>
+  </button>
+</div>
+
+<script>
+  // Loader
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      document.getElementById('loader').classList.add('hide');
+    }, 2200);
+  });
+
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const follower = document.getElementById('cursor-follower');
+  let fx = 0, fy = 0, mx = 0, my = 0;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cursor.style.left = mx + 'px'; cursor.style.top = my + 'px'; });
+  function animFollower() {
+    fx += (mx - fx) * 0.12;
+    fy += (my - fy) * 0.12;
+    follower.style.left = fx + 'px'; follower.style.top = fy + 'px';
+    requestAnimationFrame(animFollower);
+  }
+  animFollower();
+  document.querySelectorAll('a, button, input, select, textarea').forEach(el => {
+    el.addEventListener('mouseenter', () => { cursor.style.transform = 'translate(-50%, -50%) scale(1.8)'; follower.style.transform = 'translate(-50%, -50%) scale(1.5)'; });
+    el.addEventListener('mouseleave', () => { cursor.style.transform = 'translate(-50%, -50%) scale(1)'; follower.style.transform = 'translate(-50%, -50%) scale(1)'; });
+  });
+
+  // Nav scroll
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // Reveal on scroll
+  const reveals = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  reveals.forEach(r => observer.observe(r));
+
+  // Mobile menu
+  document.getElementById('hamburger').addEventListener('click', () => {
+    document.getElementById('mobile-menu').classList.add('open');
+  });
+  document.getElementById('close-menu').addEventListener('click', closeMobileMenu);
+  function closeMobileMenu() { document.getElementById('mobile-menu').classList.remove('open'); }
+
+  // Booking form
+  function submitBooking() {
+    const fname = document.getElementById('fname').value;
+    const bdate = document.getElementById('bdate').value;
+    const bservice = document.getElementById('bservice').value;
+    if (!fname || !bdate || !bservice) {
+      alert('Please fill in your name, date, and service to continue.');
+      return;
+    }
+    document.getElementById('booking-form-content').style.display = 'none';
+    document.getElementById('booking-success').style.display = 'block';
+  }
+  function resetForm() {
+    document.getElementById('booking-form-content').style.display = 'block';
+    document.getElementById('booking-success').style.display = 'none';
+    document.getElementById('fname').value = '';
+    document.getElementById('lname').value = '';
+    document.getElementById('phone').value = '';
+    document.getElementById('email').value = '';
+    document.getElementById('bdate').value = '';
+    document.getElementById('btime').value = '';
+    document.getElementById('bservice').value = '';
+    document.getElementById('bnotes').value = '';
+  }
+
+  // WhatsApp chat
+  const waResponses = {
+    '📅 book appointment': "Great! You can book your appointment by filling out our booking form on this page, or you can message us directly on WhatsApp at +92 300 123 4567. We'll confirm within 1 hour! 📅✨",
+    '💰 view prices': "Here are our starting prices:\n💅 Classic Manicure: $25+\n✨ Gel Manicure: $45+\n💎 Nail Extensions: $65+\n🎨 Nail Art: $15+\n🦶 Luxury Pedicure: $50+\n🌟 Full Spa Package: $110+\n\nCheck our Pricing section for packages!",
+    '🕐 working hours': "Our salon hours are:\n🗓 Monday – Saturday: 9:00 AM – 8:00 PM\n☀️ Sunday: 10:00 AM – 6:00 PM\n\nWe recommend booking in advance for weekends!",
+    '📍 location': "We're located at:\n📍 24 Pearl Boulevard, Clifton\nKarachi, Sindh, Pakistan\n\nEasy parking available! Use the map on our website or Google Maps. See you soon! 💖"
+  };
+
+  function toggleWaChat() {
+    const popup = document.getElementById('wa-popup');
+    popup.classList.toggle('open');
+  }
+  function closeWaChat() {
+    document.getElementById('wa-popup').classList.remove('open');
+  }
+
+  function addWaMsg(text, type) {
+    const body = document.getElementById('wa-chat-body');
+    const now = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+    const msg = document.createElement('div');
+    msg.className = 'wa-msg ' + type;
+    msg.innerHTML = text.replace(/\n/g, '<br>') + '<div class="wa-msg-time">' + now + '</div>';
+    body.appendChild(msg);
+    body.scrollTop = body.scrollHeight;
+  }
+
+  function waReply(text) {
+    addWaMsg(text, 'user');
+    const key = text.toLowerCase();
+    document.getElementById('wa-quick-replies').style.display = 'none';
+    setTimeout(() => {
+      const resp = waResponses[key] || "Thank you for your message! Our team will get back to you shortly. For immediate assistance, call us at +92 300 123 4567 💖";
+      addWaMsg(resp, 'bot');
+    }, 800);
+  }
+
+  function waSend() {
+    const input = document.getElementById('wa-input');
+    const msg = input.value.trim();
+    if (!msg) return;
+    addWaMsg(msg, 'user');
+    input.value = '';
+    document.getElementById('wa-quick-replies').style.display = 'none';
+    setTimeout(() => {
+      const lower = msg.toLowerCase();
+      let reply = "Thanks for reaching out! 💖 For bookings, call us at +92 300 123 4567 or use our online booking form. Our team is here to help!";
+      if (lower.includes('price') || lower.includes('cost') || lower.includes('how much')) reply = waResponses['💰 view prices'];
+      else if (lower.includes('hour') || lower.includes('open') || lower.includes('time')) reply = waResponses['🕐 working hours'];
+      else if (lower.includes('location') || lower.includes('address') || lower.includes('where')) reply = waResponses['📍 location'];
+      else if (lower.includes('book') || lower.includes('appoint')) reply = waResponses['📅 book appointment'];
+      addWaMsg(reply, 'bot');
+    }, 900);
+  }
+
+  function waKeyPress(e) { if (e.key === 'Enter') waSend(); }
+
+  // Set min date for booking
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('bdate').min = today;
+
+  // 3D card tilt on hover
+  document.querySelectorAll('.service-card, .price-card, .review-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      const rx = (-y / rect.height) * 10;
+      const ry = (x / rect.width) * 10;
+      card.style.transform = `perspective(800px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-8px)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+    });
+  });
+</script>
+</body>
+</html>
